@@ -3,6 +3,9 @@
     "browser": true,
     "es2021": true
   },
+  "globals": {
+    "process": "readonly"   // 👈 tell ESLint "process" exists (read-only)
+  },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended"
@@ -21,7 +24,7 @@
     "react/react-in-jsx-scope": "off",   // no need for React import since React 17+
     "react/prop-types": "off",           // disable PropTypes if not using them
     "no-unused-vars": "warn",            // warn instead of error for unused vars
-    "no-undef": "error"                  // still catch undefined vars (important)
+    "no-undef": "error"                  // catch truly undefined vars
   },
   "settings": {
     "react": {
