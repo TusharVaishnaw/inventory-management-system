@@ -57,6 +57,7 @@ These commands will push you code to new branch: feature/<your-feature-name>
 ```bash
 git add .
 git commit -m "Complete: <feature-name> ✅"
+git checkout -b v3plusadmin    # Create and switch to new branch
 git push -u origin feature/<your-feature-name>
 ```
 
@@ -78,3 +79,4 @@ Try GPT
 ![image](https://github.com/user-attachments/assets/ab9d3919-69de-4177-af33-40f453d9e005)
 
 
+  
