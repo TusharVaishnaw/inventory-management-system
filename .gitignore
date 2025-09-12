@@ -1,7 +1,8 @@
 # Ignore node_modules
 client/node_modules/
 server/node_modules/
-node_modules
+node_modules/
+
 # Ignore environment files
 server/.env
 
@@ -17,9 +18,8 @@ package-lock.json
 yarn.lock
 pnpm-lock.yaml
 
-# Build outputs (optional)
-client/build/
-client/dist/
+# Remove this line:
+# client/build/
 
 # Vite/CRA cache (optional)
 client/.cache/

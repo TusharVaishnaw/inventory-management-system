@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cors = require('cors');
+const path = require('path');
 const connectDB = require('./config/db');
 const adminRoutes = require('./routes/admin'); 
 const apiRoutes = require('./routes/api'); // Centralized route file
@@ -19,9 +20,11 @@ connectDB();
 
 const app = express();
 
-// CORS Configuration - MUST BE BEFORE ROUTES
+// CORS Configuration - Updated for production
 const corsOptions = {
-  origin: 'http://localhost:3000', // your frontend origin
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://inventorymgmtv1-production.up.railway.app'] 
+    : ['http://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true,
@@ -38,13 +41,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'));
 
-// Routes - AFTER middleware
+// API Routes - BEFORE static files
 app.use('/api/admin', adminRoutes);
 app.use('/api', apiRoutes);
 app.use('/api/outset', outsetRoutes);
-app.use('/api/insets', insetRoutes); // Add inset route handler
-app.use('/api/inventory', inventoryRoutes); // Add inventory route handler
-app.use('/api/metadata', metadataRoutes); // metadata
+app.use('/api/insets', insetRoutes);
+app.use('/api/inventory', inventoryRoutes);
+app.use('/api/metadata', metadataRoutes);
+
+// Serve static files from React build (AFTER API routes)
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+// Catch all handler: send back React's index.html file for non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
 
 // Global Error Handler
 app.use((err, req, res, next) => {
@@ -53,11 +64,6 @@ app.use((err, req, res, next) => {
     message: 'Internal Server Error',
     error: process.env.NODE_ENV === 'development' ? err.message : {}
   });
-});
-
-// Catch-all for undefined routes
-app.use('*', (req, res) => {
-  res.status(404).json({ message: `Route ${req.originalUrl} not found` });
 });
 
 // Start the server
