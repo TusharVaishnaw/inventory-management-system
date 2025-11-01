@@ -182,6 +182,9 @@ const filteredOutsets = useMemo(() => {
 
 const fetchData = useCallback(async (forceRefresh = false) => {
   try {
+    // Set loading state at the start
+    setLoading(prev => ({ ...prev, inventory: true, outsets: true }));
+    
     // Invalidate if force refresh
     if (forceRefresh) {
       invalidateCache(['inventory', 'outsets']);
@@ -193,7 +196,6 @@ const fetchData = useCallback(async (forceRefresh = false) => {
       if (cachedInventory && cachedOutsets) {
         setInventory(cachedInventory.filter(item => item.quantity > 0));
         setOutsetItems(cachedOutsets);
-        setLoading(prev => ({ ...prev, inventory: false, outsets: false }));
       }
     }
 
