@@ -8,6 +8,8 @@ import { useInboundCart } from '../hooks/useInboundCart'; // 🚀 NEW
 import InboundCart from '../components/InboundCart'; // 🚀 NEW
 import ExcelImport from '../components/ExcelImport';
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
+import MobileInboundWizard from '../components/MobileInboundWizard';
+import { Smartphone } from 'lucide-react';
 import {
   Plus, Search, Filter, Download, Printer, RefreshCw,
   ArrowDownToLine, TrendingUp, Calendar, User, MapPin,
@@ -51,6 +53,7 @@ const [bins, setBins] = useState([]);
   const [binsLoading, setBinsLoading] = useState(true);
   const [binSearchTerm, setBinSearchTerm] = useState('');
   const [showBinDropdown, setShowBinDropdown] = useState(false);
+  const [showMobileWizard, setShowMobileWizard] = useState(false);
 
   const [filters, setFilters] = useState({
     search: '',
@@ -567,13 +570,15 @@ const handleProcessCart = async (cartData) => {
         </div>
         
         <div className="mt-4 lg:mt-0 flex flex-wrap gap-3">
-          <button
-            onClick={() => setShowForm(true)}
-            className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add to Cart
-          </button>
+        <button
+          onClick={() => setShowMobileWizard(true)}
+          className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-sm font-medium rounded-lg transition-all"
+        >
+          {/* <Smartphone className="w-4 h-4 mr-2" /> */}
+                          <Plus className="w-4 h-4 mr-2" />
+          
+          Add Item
+        </button>
 
           {/* 🚀 NEW: Cart Button */}
           <button
@@ -1132,6 +1137,17 @@ const handleProcessCart = async (cartData) => {
         confirmText="Delete & Reverse Inventory"
         isLoading={deletingInset}
       />
+      {/* Mobile Barcode Wizard */}
+{showMobileWizard && (
+  <MobileInboundWizard
+    bins={bins}
+    onAddToCart={(item) => {
+      addToCart(item);
+      setShowMobileWizard(false);
+    }}
+    onClose={() => setShowMobileWizard(false)}
+  />
+)}
     </div>
   );
 };
