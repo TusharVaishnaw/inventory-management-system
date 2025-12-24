@@ -10,7 +10,8 @@ You can test the live application here:
 **Admin Credentials:**
 -   **Email:** `admin123@inventory.com`
 -   **Password:** `12345678`
-<span style="color:red">After Entering credentials - wait for 1-2 minutes and try again. Because my render bankend server sleeps after 20 minutes of inactivity.</span>
+> ⚠️ **Note:** After entering credentials, wait **1–2 minutes** and try again.  
+> The Render backend sleeps after **20 minutes** of inactivity.
 
 ## Table of Contents
 
